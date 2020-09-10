@@ -42,13 +42,13 @@ public class PrimesFinderTool {
 
         while (Arrays.stream(threads).anyMatch(Thread::isAlive)) {
             if (MouseMovementMonitor.getInstance().getTimeSinceLastMouseMovement() < 10000) {
+                System.out.println("pause");
+                pause = true;
+            } else {
                 pause = false;
                 synchronized (monitor){
                     monitor.notifyAll();
                 }
-            } else {
-                System.out.println("pause");
-                pause = true;
             }
         }
 
