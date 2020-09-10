@@ -15,7 +15,6 @@ public class PrimeFinder extends Thread{
         this.a = a;
         this.b = b;
         this.prs = prs;
-
     }
 
     @Override
@@ -23,6 +22,15 @@ public class PrimeFinder extends Thread{
         MathUtilities mt = new MathUtilities();
         BigInteger i = a;
         while (i.compareTo(b) <= 0) {
+            synchronized (PrimesFinderTool.monitor) {
+                if (PrimesFinderTool.pause) {
+                    try {
+                        PrimesFinderTool.monitor.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             if (mt.isPrime(i)) {
                 prs.addPrime(i);
             }
